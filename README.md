@@ -18,7 +18,7 @@ Haskell 2
 Haskell 1
 ---------
 
-* Try to improve the improve the Haskell 2 - But failed
+* Try to improve the the Haskell 2 - But failed
 
 Bash
 ----

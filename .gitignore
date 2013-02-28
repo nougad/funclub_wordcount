@@ -5,3 +5,10 @@ cabal-dev
 *.chi
 *.chs.h
 .virthualenv
+
+haskell1/Solution
+haskell1/Solution.prof
+haskell2/Solution
+haskell2/Solution.prof
+moby-dic.txt
+moby-dic_100.txt

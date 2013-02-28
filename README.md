@@ -9,6 +9,7 @@ See: http://www.meetup.com/thefunclub/events/104441382/
     wget http://www.textlibrary.com/download/moby-dic.txt
     for I in $(seq 1 100); do cat moby-dic.txt ; done > moby-dic_100.txt
 
+More solutions: http://pad.spline.de/fun-club
 
 Haskell 2
 ---------

@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+INPUT="../moby-dic.txt"
+# for I in $(seq 1 100); do cat moby-dic.txt ; done > moby-dic_100.txt
+#INPUT="../moby-dic_100.txt"
+CPUS=4
+
+echo "-> Don't use mac coreutils! -> gnu is faster"
+echo
+echo "tr ' [A-Z]' '\n[a-z]' < $INPUT | sed -e 's/[^[:alnum:]]//g' | grep -v ^$ | sort | uniq -c | sort -nr | head"
+echo
+time gtr ' [A-Z]' '\n[a-z]' < $INPUT | sed -e 's/[^[:alnum:]]//g' | grep -v ^$ | gsort | guniq -c | gsort -nr | ghead >/dev/null
+echo
+echo "sed has bad performance! => use tr (thx to Martin)"
+echo
+echo "tr -cs '[:alnum:]' ' ' < $INPUT  | tr ' [:upper:]' '\n[:lower:]' | sort | uniq -c | sort -nr | head"
+echo
+time gtr -cs '[:alnum:]' ' ' < $INPUT  | gtr ' [:upper:]' '\n[:lower:]' | gsort | guniq -c | gsort -nr | ghead >/dev/null
+echo
+echo "-> more memory for sorting, concurrent (only in gnu coreutils)"
+echo
+echo "tr -cs '[:alnum:]' ' ' < $INPUT  | tr ' [:upper:]' '\n[:lower:]' | sort -S1G --parallel=$CPUS | uniq -c | sort -nr | head"
+echo
+time gtr -cs '[:alnum:]' ' ' < $INPUT  | gtr ' [:upper:]' '\n[:lower:]' | gsort -S1G --parallel=$CPUS | guniq -c | gsort -nr | ghead >/dev/null
+echo
+echo "-> don't sort two times: save in a map (thx to Martin)"
+echo
+echo "tr -cs '[:alnum:]' ' ' < $INPUT | tr '[:upper:] ' '[:lower:]\n' | awk '{count[$1]++}END{for(j in count) print count[j],j}' | sort -nr | head"
+echo
+time gtr -cs '[:alnum:]' ' ' < $INPUT | gtr '[:upper:] ' '[:lower:]\n' | awk '{count[$1]++}END{for(j in count) print count[j],j}' | gsort -nr | ghead >/dev/null
+echo
+echo "-> less output = less sort"
+echo
+echo "tr -cs '[:alnum:]' ' ' < $INPUT | tr '[:upper:] ' '[:lower:]\n' | awk -f test.awk | sort -nr | head"
+echo
+time gtr -cs '[:alnum:]' ' ' < $INPUT | gtr '[:upper:] ' '[:lower:]\n' | awk -f test.awk | gsort -nr | ghead >/dev/null
+echo
+
